@@ -66,3 +66,7 @@ REVISION
 /mpc*
 /gmp*
 /isl*
+
+# kirkhamj IDE stuff
+*.cbp
+*.layout
