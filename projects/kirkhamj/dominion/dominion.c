@@ -693,20 +693,70 @@ int a2Adventurer(int* curDrawnTreasure, struct gameState* curState, int* curPlay
     return 0;
 }
 
-int a2CardC()
+int a2Village(int* curPlayer, struct gameState* curState,int* curHandPos)
 {
+    //+1 card
+    drawCard(*curPlayer, curState);
 
+    //+2 actions
+    curState->numActions = curState->numActions + 2;
 
+    //discard played card from hand
+    discardCard(*curHandPos, *curPlayer, curState, 0);
+
+    return 0;
 }
 
-int a2CardD()
+int a2Council_Room(int* curPlayer, struct gameState* curState, int* curHandPos)
 {
+    //+4 cards
+    for (int i = 0; i < 4; i++)
+    {
+        drawCard(*curPlayer, curState);
+    }
 
+    //+1 buy
+    curState->numBuys++;
+
+    //Each other player draws a card
+    for (int i = 0; i < curState->numPlayers; i++)
+    {
+        if (i != (*curPlayer))
+        {
+            drawCard(i, curState);
+        }
+    }
+
+    //put played card in played card pile
+    discardCard(*curHandPos, *curPlayer, curState, 0);
+
+    return 0;
 }
 
-int a2CardE()
+int a2Steward(int* curChoice1, int* curPlayer, struct gameState* curState, int* curChoice2, int* curChoice3, int* curHandPos)
 {
+    if (*curChoice1 == 1)
+    {
+        //+2 cards
+        drawCard(*curPlayer, curState);
+        drawCard(*curPlayer, curState);
+    }
+    else if (*curChoice1 == 2)
+    {
+        //+2 coins
+        curState->coins = curState->coins + 2;
+    }
+    else
+    {
+        //trash 2 cards in hand
+        discardCard(*curChoice2, *curPlayer, curState, 1);
+        discardCard(*curChoice2, *curPlayer, curState, 1);
+    }
 
+    //discard card from hand
+    discardCard(*curHandPos, *curPlayer, curState, 0);
+
+    return 0;
 }
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
@@ -759,6 +809,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return a2Adventurer(&drawntreasure, state, &currentPlayer, &cardDrawn, temphand, &z);  //assignment 2 refactor
 
     case council_room:
+
+    /*assignment 2 refactor
       //+4 Cards
       for (i = 0; i < 4; i++)
 	{
@@ -781,6 +833,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       discardCard(handPos, currentPlayer, state, 0);
 
       return 0;
+    */
+        return a2Council_Room(&currentPlayer, state, &handPos); //assignment 2 refactor
 
     case feast:
       //gain card with cost up to 5
@@ -915,6 +969,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return a2Smithy(&currentPlayer, state, &handPos);  //assignment 2 refactor
 
     case village:
+
+    /* assignment 2 refactor
       //+1 Card
       drawCard(currentPlayer, state);
 
@@ -923,7 +979,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
+
       return 0;
+    */
+        return a2Village(&currentPlayer, state, &handPos); //assignment 2 refactor
 
     case baron:
       state->numBuys++;//Increase buys by 1!
@@ -1039,6 +1098,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 
     case steward:
+
+    /*assignment 2 refactor
       if (choice1 == 1)
 	{
 	  //+2 cards
@@ -1060,6 +1121,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
+    */
+        return a2Steward(&choice1, &currentPlayer, state, &choice2, &choice3, &handPos); //assignment 2 refactor
 
     case tribute:
       if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
