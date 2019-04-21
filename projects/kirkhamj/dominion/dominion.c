@@ -647,7 +647,8 @@ int getCost(int cardNumber)
 int a2Smithy(int* curPlayer, struct gameState* curState, int* curHandPos)
 {
     //+3 cards
-    for (int i = 0; i < 3; i++)
+    //for (int i = 0; i < 3; i++) //original, non-bugged "for" statement
+    for (int i = 0; i <= 3; i++) //assignment 2 intentional bug
     {
         drawCard(*curPlayer, curState);
     }
@@ -671,7 +672,8 @@ int a2Adventurer(int* curDrawnTreasure, struct gameState* curState, int* curPlay
         drawCard(*curPlayer, curState);
         *curCardDrawn = curState->hand[*curPlayer][curState->handCount[*curPlayer]-1];//top card of hand is most recently drawn card.
 
-        if (*curCardDrawn == copper || *curCardDrawn == silver || *curCardDrawn == gold)
+        //if (*curCardDrawn == copper || *curCardDrawn == silver || *curCardDrawn == gold) //original, non-bugged "if" statement
+        if (*curCardDrawn == copper || *curCardDrawn == silver || *curCardDrawn == estate) //assignment 2 intentional bug
         {
             *curDrawnTreasure++;
         }
@@ -698,8 +700,7 @@ int a2Village(int* curPlayer, struct gameState* curState,int* curHandPos)
     //+1 card
     drawCard(*curPlayer, curState);
 
-    //+2 actions
-    curState->numActions = curState->numActions + 2;
+    //+2 actions curState->numActions = curState->numActions + 2; //assignment 2 intentional bug - line commented out
 
     //discard played card from hand
     discardCard(*curHandPos, *curPlayer, curState, 0);
@@ -721,7 +722,8 @@ int a2Council_Room(int* curPlayer, struct gameState* curState, int* curHandPos)
     //Each other player draws a card
     for (int i = 0; i < curState->numPlayers; i++)
     {
-        if (i != (*curPlayer))
+        //if (i != (*curPlayer)) //original unbugged "if" statement
+        if (i = (*curPlayer)) //assignment 2 intentional bug - i assigned to cur player value so statement always true
         {
             drawCard(i, curState);
         }
@@ -758,6 +760,7 @@ int a2Steward(int* curChoice1, int* curPlayer, struct gameState* curState, int* 
 
     return 0;
 }
+/*end Assignment 2 Implementations*/
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
