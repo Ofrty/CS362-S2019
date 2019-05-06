@@ -84,8 +84,8 @@ int testCouncilRoomRefactor(struct scen* scen, int v)
 
 		/*part 3: did the card (not) have the expected effect on other players if (not) expected*/
 		//check other player's hand count
-		if (v==1) {printf("expected other player hand count **%d**, actual **%d**\n\t- ", otherPlayerHandPre, otherPlayerHandPost);}
-		if (otherPlayerHandPre != otherPlayerHandPost)
+		if (v==1) {printf("expected other player hand count **%d**, actual **%d**\n\t- ", otherPlayerHandPre + 1, otherPlayerHandPost);}
+		if ((otherPlayerHandPre + 1) != otherPlayerHandPost)
 		{
 			testRet = -1;
 			if (v == 1) {printf("FAIL\n");}
@@ -93,8 +93,8 @@ int testCouncilRoomRefactor(struct scen* scen, int v)
 		else if (v == 1) {printf("PASS\n");}
 
 		//check other player's deck count
-		if (v==1) {printf("expected other player deck count **%d**, actual **%d**\n\t- ", otherPlayerDeckPre, otherPlayerDeckPost);}
-		if (otherPlayerDeckPre != otherPlayerDeckPost)
+		if (v==1) {printf("expected other player deck count **%d**, actual **%d**\n\t- ", otherPlayerDeckPre - 1, otherPlayerDeckPost);}
+		if ((otherPlayerDeckPre - 1) != otherPlayerDeckPost)
 		{
 			testRet = -1;
 			if (v == 1) {printf("FAIL\n");}

@@ -40,19 +40,19 @@ unittestresults: unittest1.c unittest2.c unittest3.c unittest4.c testingTools.h 
 	gcc -o unittest2 unittest2.c -g  $(CFLAGS)
 	gcc -o unittest3 unittest3.c -g  $(CFLAGS)
 	gcc -o unittest4 unittest4.c -g  $(CFLAGS)
-	echo "Result for running unit tests:" > unitresults.out
-	echo "unittest1.c:" >> unitresults.out
-	./unittest1 >> unitresults.out
-	gcov unittest1.c >> unittestresult.out
-	echo "unittest2.c:" >> unitresults.out
-	./unittest2 >> unitresults.out
-	gcov unittest2.c >> unittestresult.out
-	echo "unittest3.c:" >> unitresults.out
-	./unittest3 >> unitresults.out
-	gcov unittest3.c >> unittestresult.out
-	echo "unittest4.c:" >> unitresults.out
-	./unittest4 >> unitresults.out
-	gcov unittest4.c >> unittestresult.out
+	echo "Result for running unit tests:" > unittestresults.out
+	echo "unittest1.c:" >> unittestresults.out
+	./unittest1 >> unittestresults.out
+	gcov unittest1.c >> unittestresults.out
+	echo "unittest2.c:" >> unittestresults.out
+	./unittest2 >> unittestresults.out
+	gcov unittest2.c >> unittestresults.out
+	echo "unittest3.c:" >> unittestresults.out
+	./unittest3 >> unittestresults.out
+	gcov unittest3.c >> unittestresults.out
+	echo "unittest4.c:" >> unittestresults.out
+	./unittest4 >> unittestresults.out
+	gcov unittest4.c >> unittestresults.out
 
 all: playdom player 
 
