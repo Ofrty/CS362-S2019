@@ -1,7 +1,7 @@
 /*****************************************************************
 Author:         Joe Kirkham
 Created:        2019/05/04
-Description:    Tests the implementation of the Smithy function
+Description:    Tests the implementation of the Adventurer function
                 refactor from assignment 2.
 *****************************************************************/
 
@@ -15,26 +15,40 @@ Description:    Tests the implementation of the Smithy function
 
 #define VERBOSITY 1
 
-int testSmithyRefactor(struct scen* scen, int v)
+int testAdventurerRefactor(struct scen* scen, int v)
 {
 	int testRet = 0;
 
 	//set up scen minutae
-	int handPos = 1; //can be any val but -1
+	int curDrawnTreasure = 0;
+	int curCardDrawn;
+	int curTempHand[MAX_HAND];
+	int curZ;
 	int curPlayer = 0;
-	int otherPlayer = 1; 
-	scen->game->handCount[curPlayer] = 5;
+	int otherPlayer = 1;
+	scen->game->deckCount[curPlayer] = 4; //deliberately setting deck to size 4 with treasure = 2
+	scen->game->deck[curPlayer][0] = copper;
+	scen->game->deck[curPlayer][0] = estate;
+	scen->game->deck[curPlayer][0] = smithy;
+	scen->game->deck[curPlayer][0] = gold;
 
 	//pre-run vars
-	int curPlayerHandPre = scen->game->handCount[curPlayer];
-	int curPlayerDeckPre = scen->game->deckCount[curPlayer];
+	int curPlayerHandCountPre = scen->game->handCount[curPlayer];
+	int curPlayerDeckCountPre = scen->game->deckCount[curPlayer];
 	int otherPlayerHandPre = scen->game->handCount[otherPlayer];
 	int otherPlayerDeckPre = scen->game->deckCount[otherPlayer];
 	int supplyPre[sizeof(scen->game->supplyCount)];
 	memcpy(supplyPre, scen->game->supplyCount, sizeof(supplyPre));
+
+	/*
+	int curPlayerHandPre[MAX_HAND];
+	memcpy(curPlayerHandPre, scen->game->hand[curPlayer], MAX_HAND);
+	int curPlayerDeckPre[MAX_DECK];
+	memcpy(curPlayerDeckPre, scen->game->deck[curPlayer], MAX_DECK);
+	*/
 	
 	//run the test
-	int runRet = a2Smithy(&curPlayer, scen->game, &handPos);
+	int runRet = a2Adventurer(&curDrawnTreasure, scen->game, &curPlayer, &curCardDrawn, curTempHand, &curZ);
 
 	//if return value of the function wasn't 0, then we know something went really wrong.
 	if (runRet != 0)
@@ -44,17 +58,24 @@ int testSmithyRefactor(struct scen* scen, int v)
 	else
 	{
 		//post-run vars
-		int curPlayerHandPost = scen->game->handCount[curPlayer];
-		int curPlayerDeckPost = scen->game->deckCount[curPlayer];
+		int curPlayerHandCountPost = scen->game->handCount[curPlayer];
+		int curPlayerDeckCountPost = scen->game->deckCount[curPlayer];
 		int otherPlayerHandPost = scen->game->handCount[otherPlayer];
 		int otherPlayerDeckPost = scen->game->deckCount[otherPlayer];
 		int supplyPost[sizeof(scen->game->supplyCount)];
 		memcpy(supplyPost, scen->game->supplyCount, sizeof(supplyPost));
 
+		/*
+		int curPlayerHandPost[MAX_HAND];
+		memcpy(curPlayerHandPost, scen->game->hand[curPlayer], MAX_HAND);
+		int curPlayerDeckPost[MAX_DECK];
+		memcpy(curPlayerDeckPost, scen->game->deck[curPlayer], MAX_DECK);
+		*/
+
 		/*part 1: did card accurately update cur player values (if any)*/
 		//check hand count
-		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (curPlayerHandPre + 3 - 1), curPlayerHandPost);}
-		if (curPlayerHandPost != (curPlayerHandPre + 3 - 1))
+		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (curPlayerHandCountPre + 2 - 1), curPlayerHandCountPost);}
+		if (curPlayerHandCountPost != (curPlayerHandCountPre + 2 - 1))
 		{
 			testRet = -1;
 			if (v == 1) {printf("FAIL\n");}
@@ -63,8 +84,8 @@ int testSmithyRefactor(struct scen* scen, int v)
 
 		//*part 2: did card use the correct cur player resources (if any)*/
 		//check deck count
-		if (v == 1) {printf("expected cur player deck count **%d**, actual **%d**\n\t- ", (curPlayerDeckPre - 3), curPlayerDeckPost);}
-		if (curPlayerDeckPost != (curPlayerDeckPre - 3))
+		if (v == 1) {printf("expected player deck count **%d**, actual **%d**\n\t- ", (curPlayerDeckCountPre - 2), curPlayerDeckCountPost);}
+		if (curPlayerDeckCountPost != (curPlayerDeckCountPre - 2))
 		{
 			testRet = -1;
 			if (v == 1) {printf("FAIL\n");}
@@ -117,8 +138,8 @@ int main() //(int argc, char *argv[])
     struct scen* scen = genScen();
 
     //run
-    if (VERBOSITY == 1){printf("**********  TEST INITIALIZED - testSmithyRefactor  **********\n\n");}
-    testRet = testSmithyRefactor(scen, VERBOSITY);
+    if (VERBOSITY == 1){printf("**********  TEST INITIALIZED - testAdventurerRefactor  **********\n\n");}
+    testRet = testAdventurerRefactor(scen, VERBOSITY);
 	if (VERBOSITY == 1){printf("\n**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
 
 

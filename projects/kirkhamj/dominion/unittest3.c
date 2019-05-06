@@ -1,7 +1,7 @@
 /*****************************************************************
 Author:         Joe Kirkham
 Created:        2019/05/04
-Description:    Tests the implementation of the Smithy function
+Description:    Tests the implementation of the Village function
                 refactor from assignment 2.
 *****************************************************************/
 
@@ -15,26 +15,26 @@ Description:    Tests the implementation of the Smithy function
 
 #define VERBOSITY 1
 
-int testSmithyRefactor(struct scen* scen, int v)
+int testVillageRefactor(struct scen* scen, int v)
 {
 	int testRet = 0;
 
 	//set up scen minutae
-	int handPos = 1; //can be any val but -1
+	int handPos = 0;
 	int curPlayer = 0;
-	int otherPlayer = 1; 
-	scen->game->handCount[curPlayer] = 5;
+	int otherPlayer = 1;
 
 	//pre-run vars
-	int curPlayerHandPre = scen->game->handCount[curPlayer];
-	int curPlayerDeckPre = scen->game->deckCount[curPlayer];
+	int curPlayerHandCountPre = scen->game->handCount[curPlayer];
+	int curPlayerDeckCountPre = scen->game->deckCount[curPlayer];
+	int curPlayerActionsPre = scen->game->numActions;
 	int otherPlayerHandPre = scen->game->handCount[otherPlayer];
 	int otherPlayerDeckPre = scen->game->deckCount[otherPlayer];
 	int supplyPre[sizeof(scen->game->supplyCount)];
 	memcpy(supplyPre, scen->game->supplyCount, sizeof(supplyPre));
 	
 	//run the test
-	int runRet = a2Smithy(&curPlayer, scen->game, &handPos);
+	int runRet = a2Village(&curPlayer, scen->game, &handPos);
 
 	//if return value of the function wasn't 0, then we know something went really wrong.
 	if (runRet != 0)
@@ -44,17 +44,28 @@ int testSmithyRefactor(struct scen* scen, int v)
 	else
 	{
 		//post-run vars
-		int curPlayerHandPost = scen->game->handCount[curPlayer];
-		int curPlayerDeckPost = scen->game->deckCount[curPlayer];
+		int curPlayerHandCountPost = scen->game->handCount[curPlayer];
+		int curPlayerDeckCountPost = scen->game->deckCount[curPlayer];
+		int curPlayerActionsPost = scen->game->numActions;
 		int otherPlayerHandPost = scen->game->handCount[otherPlayer];
 		int otherPlayerDeckPost = scen->game->deckCount[otherPlayer];
 		int supplyPost[sizeof(scen->game->supplyCount)];
 		memcpy(supplyPost, scen->game->supplyCount, sizeof(supplyPost));
 
+
 		/*part 1: did card accurately update cur player values (if any)*/
 		//check hand count
-		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (curPlayerHandPre + 3 - 1), curPlayerHandPost);}
-		if (curPlayerHandPost != (curPlayerHandPre + 3 - 1))
+		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (curPlayerHandCountPre + 1 - 1), curPlayerHandCountPost);}
+		if (curPlayerHandCountPost != (curPlayerHandCountPre + 1 - 1))
+		{
+			testRet = -1;
+			if (v == 1) {printf("FAIL\n");}
+		}
+		else if (v == 1) {printf("PASS\n");}
+
+		//check actions
+		if (v == 1) {printf("expected cur player action count **%d**, actual **%d**\n\t- ", (curPlayerActionsPre + 2), curPlayerActionsPost);}
+		if (curPlayerHandCountPost != (curPlayerHandCountPre + 2))
 		{
 			testRet = -1;
 			if (v == 1) {printf("FAIL\n");}
@@ -63,8 +74,8 @@ int testSmithyRefactor(struct scen* scen, int v)
 
 		//*part 2: did card use the correct cur player resources (if any)*/
 		//check deck count
-		if (v == 1) {printf("expected cur player deck count **%d**, actual **%d**\n\t- ", (curPlayerDeckPre - 3), curPlayerDeckPost);}
-		if (curPlayerDeckPost != (curPlayerDeckPre - 3))
+		if (v == 1) {printf("expected player deck count **%d**, actual **%d**\n\t- ", (curPlayerDeckCountPre - 1), curPlayerDeckCountPost);}
+		if (curPlayerDeckCountPost != (curPlayerDeckCountPre - 1))
 		{
 			testRet = -1;
 			if (v == 1) {printf("FAIL\n");}
@@ -117,8 +128,8 @@ int main() //(int argc, char *argv[])
     struct scen* scen = genScen();
 
     //run
-    if (VERBOSITY == 1){printf("**********  TEST INITIALIZED - testSmithyRefactor  **********\n\n");}
-    testRet = testSmithyRefactor(scen, VERBOSITY);
+    if (VERBOSITY == 1){printf("**********  TEST INITIALIZED - testVillageRefactor  **********\n\n");}
+    testRet = testVillageRefactor(scen, VERBOSITY);
 	if (VERBOSITY == 1){printf("\n**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
 
 

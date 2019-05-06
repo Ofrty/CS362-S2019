@@ -696,7 +696,7 @@ int a2Adventurer(int* curDrawnTreasure, struct gameState* curState, int* curPlay
     return 0;
 }
 
-int a2Village(int* curPlayer, struct gameState* curState,int* curHandPos)
+int a2Village(int* curPlayer, struct gameState* curState, int* curHandPos)
 {
     //+1 card
     drawCard(*curPlayer, curState);
