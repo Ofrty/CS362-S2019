@@ -16,7 +16,8 @@ Description:    See header file for description.
 //generates a packaged struct of relevant vars
 struct scen* genScen()
 {
-    struct scen* scen ;
+    struct scen* scen = malloc(sizeof(struct scen));
+	scen->game = newGame();
 
     //set vars
     scen->seed = 1000;
@@ -40,6 +41,18 @@ struct scen* genScen()
 
     return scen;
 };
+
+//dealloc scen
+int killScen(struct scen* scen)
+{
+	memset(scen->game, 0, sizeof(struct gameState));
+	scen->game = 0;
+
+	memset(scen, 0, sizeof(struct scen));
+	scen = 0;
+
+	return 0;
+}
 
 //interprets the provided arg as an int of val 0 to 9
 int interpretArgAsInt0to9(int arg)

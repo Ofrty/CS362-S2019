@@ -13,24 +13,49 @@ Description:    Tests the implementation of the Smithy function
 #include <stdio.h>
 #include <stdlib.h>
 
-int testSmithyRefactor(int v)
+int testSmithyRefactor(struct scen* scen, int v)
 {
-    //part 1: did card accurately update cur player values (if any)
-	printf("calling testsmithyrefactor");
+	int testRet;
+
+	//pre-run vars
+	int curPlayerHandPreRun = scen->game->handCount;
+
+	printf("\npoint a\n");
+
+	//run the test
+	int runRet = a2Smithy(whoseTurn(scen->game), scen->game, 1);
+
+	printf("\npoint b\n");
+
+	//if return value of the function wasn't 0, then we know something went really wrong.
+	if (!runRet)
+	{
+		testRet = -666;
+	}
+	else
+	{
+		//post-run vars
+		int curPlayerHandPostRun = scen->game->handCount;
+
+		//part 1: did card accurately update cur player values (if any)
+		if (curPlayerHandPostRun != (curPlayerHandPreRun + 3))
+		{
+			testRet = -1;
+		}
+
+		//part 2: did card use the correct cur player resources (if any)
 
 
-    //part 2: did card use the correct cur player resources (if any)
+
+		//part 3: did the card (not) have the expected effect on other players if (not) expected
 
 
 
-    //part 3: did the card (not) have the expected effect on other players if (not) expected
+		//part 4: were other non-player resources (not) affected if effect (not) expected
 
+	}
 
-
-    //part 4: were other non-player resources (not) affected if effect (not) expected
-
-
-    return 0;
+	return testRet;
 }
 
 int main(int argc, char *argv[])
@@ -44,23 +69,13 @@ int main(int argc, char *argv[])
     struct scen* scen = genScen();
 
     //smithy
-    if (v == 1)
-    {
-    	printf("**********  TEST INITIALIZED - testSmithyRefactor  **********\n\n");
-    }
-    else
-	{
-		printf("verbosity not eq 1\n");
-	}
-    testRet = testSmithyRefactor(v);
-	if (v == 1)
-	{
-		printf("**********  TEST RETURNS - %d  **********\n\n\n", testRet);
-	}
-	else
-	{
-		printf("verbosity not eq 1\n");
-	}
+    if (v == 1){printf("**********  TEST INITIALIZED - testSmithyRefactor  **********\n\n");}
+    testRet = testSmithyRefactor(scen, v);
+	if (v == 1){printf("**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
+
+
+	//dealloc mem
+	killScen(scen);
 
     return 0;
 }

@@ -34,8 +34,11 @@ struct scen
 };
 
 /*methods*/
-//generate a game scenario
+//generate a game scenario (constructor)
 struct scen* genScen();
+
+//dealloc scen (destructor)
+int killScen(struct scen*);
 
 //interprets the provided arg as an int of val 0 to 9
 int interpretArgAsInt0to9(int);
