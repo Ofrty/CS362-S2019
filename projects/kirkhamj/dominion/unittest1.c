@@ -20,12 +20,18 @@ int testSmithyRefactor(struct scen* scen, int v)
 	//set up scen minutae
 	int handPos = 1; //can be any val but -1
 	int curPlayer = whoseTurn(scen->game);
-	scen->game->handCount[curPlayer] = MAX_HAND;
+	scen->game->handCount[curPlayer] = MAX_HAND; //fill discard w/ coppers
+	scen->game->discard[curPlayer][0] = copper;
+	scen->game->discard[curPlayer][1] = copper;
+	scen->game->discard[curPlayer][2] = copper;
+	scen->game->discard[curPlayer][3] = copper;
+
+	scen->game->discardCount[curPlayer] = 4;
 
 	//pre-run vars
 	int curPlayerHandPreRun = scen->game->handCount[curPlayer];
 	
-	printf("handcount pre is %d\n", curPlayerHandPreRun);
+	//printf("handcount pre is %d\n", curPlayerHandPreRun);
 
 	//run the test
 	int runRet = a2Smithy(&curPlayer, scen->game, &handPos);
