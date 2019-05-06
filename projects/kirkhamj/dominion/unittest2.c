@@ -23,14 +23,14 @@ int testAdventurerRefactor(struct scen* scen, int v)
 	int curDrawnTreasure = 0;
 	int curCardDrawn;
 	int curTempHand[MAX_HAND];
-	int curZ;
+	int curZ = 0;
 	int curPlayer = 0;
 	int otherPlayer = 1;
 	scen->game->deckCount[curPlayer] = 4; //deliberately setting deck to size 4 with treasure = 2
 	scen->game->deck[curPlayer][0] = copper;
-	scen->game->deck[curPlayer][0] = estate;
-	scen->game->deck[curPlayer][0] = smithy;
-	scen->game->deck[curPlayer][0] = gold;
+	scen->game->deck[curPlayer][1] = estate;
+	scen->game->deck[curPlayer][2] = smithy;
+	scen->game->deck[curPlayer][3] = gold;
 
 	//pre-run vars
 	int curPlayerHandCountPre = scen->game->handCount[curPlayer];
@@ -83,8 +83,8 @@ int testAdventurerRefactor(struct scen* scen, int v)
 		else if (v == 1) {printf("PASS\n");}
 
 		//*part 2: did card use the correct cur player resources (if any)*/
-		//check deck count
-		if (v == 1) {printf("expected player deck count **%d**, actual **%d**\n\t- ", (curPlayerDeckCountPre - 2), curPlayerDeckCountPost);}
+		//check deck count - expect all cards to be flipped
+		if (v == 1) {printf("expected player deck count **%d**, actual **%d**\n\t- ", (curPlayerDeckCountPre - 4), curPlayerDeckCountPost);}
 		if (curPlayerDeckCountPost != (curPlayerDeckCountPre - 2))
 		{
 			testRet = -1;

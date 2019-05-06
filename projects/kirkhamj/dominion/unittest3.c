@@ -23,6 +23,7 @@ int testVillageRefactor(struct scen* scen, int v)
 	int handPos = 0;
 	int curPlayer = 0;
 	int otherPlayer = 1;
+	scen->game->handCount[curPlayer] = 2;
 
 	//pre-run vars
 	int curPlayerHandCountPre = scen->game->handCount[curPlayer];
@@ -64,8 +65,8 @@ int testVillageRefactor(struct scen* scen, int v)
 		else if (v == 1) {printf("PASS\n");}
 
 		//check actions
-		if (v == 1) {printf("expected cur player action count **%d**, actual **%d**\n\t- ", (curPlayerActionsPre + 2), curPlayerActionsPost);}
-		if (curPlayerHandCountPost != (curPlayerHandCountPre + 2))
+		if (v == 1) {printf("expected cur player action count **%d**, actual **%d**\n\t- ", (curPlayerActionsPre + 2 - 1), curPlayerActionsPost);}
+		if (curPlayerHandCountPost != (curPlayerHandCountPre + 2 - 1))
 		{
 			testRet = -1;
 			if (v == 1) {printf("FAIL\n");}
