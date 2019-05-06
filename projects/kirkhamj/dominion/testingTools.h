@@ -3,7 +3,7 @@ Author:         Joe Kirkham
 Created:        2019/05/04
 Description:    Various common tools to aid in writing tests for dominion code.
 
-Citations:
+Citations (header & implementation):
     Some code & concepts borrowed from the instructor-provided testUpdateCoins.c.
 *****************************************************************/
 
@@ -24,13 +24,12 @@ Citations:
 struct scen
 {
     //main vars
-    struct gameState* game;
+    struct gameState game;
     int i, p, r, handCount;
-    int seed = 1000;
-    int numPlayer = 2;
-    int maxBonus = 10;
-    int k[10] = {adventurer, council_room, feast, gardens, mine
-            , remodel, smithy, village, baron, great_hall};
+    int seed;
+    int numPlayer;
+    int maxBonus;
+    int k[10];
     int maxHandCount = 5;
 
     // arrays of all coppers, silvers, and golds

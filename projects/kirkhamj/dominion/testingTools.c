@@ -11,6 +11,17 @@ struct scen* genScen()
 {
     struct scen* scen;
 
+    //set vars
+    scen->seed = 1000;
+    scen->numPlayer = 2;
+    scen->maxBonus = 10;
+    scen->k[10] = {adventurer, council_room, feast, gardens, mine , remodel, smithy, village, baron, great_hall};
+    scen->maxHandCount = 5;
+
+    memset(scen->game, 23, sizeof(struct gameState));     // clear the game state
+    r = initializeGame(numPlayer, k, seed, scen->game);   // initialize a new game
+    scen->game.handCount[p] = handCount;                  // set the number of cards on hand
+
     return scen;
 };
 
