@@ -9,13 +9,14 @@ Description:    Tests the implementation of the Smithy function
 #include "dominion_helpers.h"
 #include "rngs.h"
 #include "testingTools.h"
+#include "testingTools.c"
 #include <stdio.h>
 #include <stdlib.h>
 
-int testSmithRefactor(v)
+int testSmithyRefactor(int v)
 {
     //part 1: did card accurately update cur player values (if any)
-
+	printf("calling testsmithyrefactor");
 
 
     //part 2: did card use the correct cur player resources (if any)
@@ -34,16 +35,32 @@ int testSmithRefactor(v)
 
 int main(int argc, char *argv[])
 {
-    //set test verbosity
-    int verbosity = setVerbosity((int) *argv[1]);
+    //testing vars
+    int v = setVerbosity((interpretArgAsInt0to9((int) *argv[1]))); //set test verbosity
+    //printf("verbosity = %d", verbosity); //debug
+    int testRet;
 
     //set up test scenario
-    struct scen* = genScen();
+    struct scen* scen = genScen();
 
     //smithy
-    if (verbosity === 1) {announceTest("refactored Smithy")}
-    testSmithyRefactor(verbosity);
-    if (verbosity === 1) {announceTest("refactored Smithy", )}
+    if (v == 1)
+    {
+    	printf("**********  TEST INITIALIZED - testSmithyRefactor  **********\n\n");
+    }
+    else
+	{
+		printf("verbosity not eq 1\n");
+	}
+    testRet = testSmithyRefactor(v);
+	if (v == 1)
+	{
+		printf("**********  TEST RETURNS - %d  **********\n\n\n", testRet);
+	}
+	else
+	{
+		printf("verbosity not eq 1\n");
+	}
 
     return 0;
 }

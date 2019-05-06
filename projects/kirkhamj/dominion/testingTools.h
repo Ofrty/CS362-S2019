@@ -24,35 +24,29 @@ Citations (header & implementation):
 struct scen
 {
     //main vars
-    struct gameState game;
+    struct gameState* game;
     int i, p, r, handCount;
     int seed;
     int numPlayer;
     int maxBonus;
     int k[10];
-    int maxHandCount = 5;
-
-    // arrays of all coppers, silvers, and golds
-    int coppers[MAX_HAND];
-    int silvers[MAX_HAND];
-    int golds[MAX_HAND];
-
-    for (i = 0; i < MAX_HAND; i++)
-    {
-        coppers[i] = copper;
-        silvers[i] = silver;
-        golds[i] = gold;
-    }
+    int maxHandCount;
 };
 
 /*methods*/
 //generate a game scenario
 struct scen* genScen();
 
+//interprets the provided arg as an int of val 0 to 9
+int interpretArgAsInt0to9(int);
+
 //determine verbosity of tests based on user input (if any). set to maximal verbosity if none provided.
 int setVerbosity(int);
 
-//print test start announcement to screen
+/* TODO: make standard testing printfs
+//formatted prints
 void announceTest(char*);
+void announceReturn(int);
+*/
 
 #endif //_TESTINGTOOLS_H
