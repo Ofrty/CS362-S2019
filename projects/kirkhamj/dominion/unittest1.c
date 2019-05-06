@@ -15,17 +15,20 @@ Description:    Tests the implementation of the Smithy function
 
 int testSmithyRefactor(struct scen* scen, int v)
 {
-	int testRet;
+	int testRet = 0;
+
+	//set up scen minutae
+	int handPos = 1; //can be any val but -1
+	int curPlayer = whoseTurn(scen->game);
+	scen->game->handCount[curPlayer] = MAX_HAND;
 
 	//pre-run vars
-	int curPlayerHandPreRun = scen->game->handCount;
-
-	printf("\npoint a\n");
+	int curPlayerHandPreRun = scen->game->handCount[curPlayer];
+	
+	printf("handcount pre is %d\n", curPlayerHandPreRun);
 
 	//run the test
-	int runRet = a2Smithy(whoseTurn(scen->game), scen->game, 1);
-
-	printf("\npoint b\n");
+	int runRet = a2Smithy(&curPlayer, scen->game, &handPos);
 
 	//if return value of the function wasn't 0, then we know something went really wrong.
 	if (!runRet)
@@ -35,7 +38,7 @@ int testSmithyRefactor(struct scen* scen, int v)
 	else
 	{
 		//post-run vars
-		int curPlayerHandPostRun = scen->game->handCount;
+		int curPlayerHandPostRun = scen->game->handCount[curPlayer];
 
 		//part 1: did card accurately update cur player values (if any)
 		if (curPlayerHandPostRun != (curPlayerHandPreRun + 3))

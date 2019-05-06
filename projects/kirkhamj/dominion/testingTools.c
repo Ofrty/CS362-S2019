@@ -35,7 +35,7 @@ struct scen* genScen()
 	scen->k[9] = great_hall;
     scen->maxHandCount = 5;
 
-    memset(scen->game, 23, sizeof(struct gameState));     // clear the game state
+    //memset(scen->game, 23, sizeof(struct gameState));     // clear the game state
 	scen->r = initializeGame(scen->numPlayer, scen->k, scen->seed, scen->game);   // initialize a new game
     scen->game->handCount[scen->p] = scen->handCount;                  // set the number of cards on hand
 
