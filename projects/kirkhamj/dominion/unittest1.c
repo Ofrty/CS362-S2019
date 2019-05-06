@@ -19,49 +19,67 @@ int testSmithyRefactor(struct scen* scen, int v)
 
 	//set up scen minutae
 	int handPos = 1; //can be any val but -1
-	int curPlayer = whoseTurn(scen->game);
-	scen->game->handCount[curPlayer] = MAX_HAND; //fill discard w/ coppers
-	scen->game->discard[curPlayer][0] = copper;
-	scen->game->discard[curPlayer][1] = copper;
-	scen->game->discard[curPlayer][2] = copper;
-	scen->game->discard[curPlayer][3] = copper;
-
-	scen->game->discardCount[curPlayer] = 4;
+	int curPlayer = 0;
+	int otherPlayer = 1; 
+	scen->game->handCount[curPlayer] = 5;
 
 	//pre-run vars
-	int curPlayerHandPreRun = scen->game->handCount[curPlayer];
+	int curPlayerHandPre = scen->game->handCount[curPlayer];
+	int curPlayerDeckPre = scen->game->deckCount[curPlayer];
+	int otherPlayerHandPre = scen->game->handCount[otherPlayer];
+	int otherPlayerDeckPre = scen->game->deckCount[otherPlayer];
 	
-	//printf("handcount pre is %d\n", curPlayerHandPreRun);
-
 	//run the test
 	int runRet = a2Smithy(&curPlayer, scen->game, &handPos);
 
 	//if return value of the function wasn't 0, then we know something went really wrong.
-	if (!runRet)
+	if (runRet != 0)
 	{
 		testRet = -666;
 	}
 	else
 	{
 		//post-run vars
-		int curPlayerHandPostRun = scen->game->handCount[curPlayer];
+		int curPlayerHandPost = scen->game->handCount[curPlayer];
+		int curPlayerDeckPost = scen->game->deckCount[curPlayer];
+		int otherPlayerHandPost = scen->game->handCount[otherPlayer];
+		int otherPlayerDeckPost = scen->game->deckCount[otherPlayer];
 
 		//part 1: did card accurately update cur player values (if any)
-		if (curPlayerHandPostRun != (curPlayerHandPreRun + 3))
+		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (curPlayerHandPre + 3 - 1), curPlayerHandPost);}
+		if (curPlayerHandPost != (curPlayerHandPre + 3 - 1))
 		{
 			testRet = -1;
+			if (v == 1) {printf("FAIL\n");}
 		}
+		else if (v == 1) {printf("PASS\n");}
 
 		//part 2: did card use the correct cur player resources (if any)
-
-
+		if (v == 1) {printf("expected player deck count **%d**, actual **%d**\n\t- ", (curPlayerDeckPre - 3), curPlayerDeckPost);}
+		if (curPlayerDeckPost != (curPlayerDeckPre - 3))
+		{
+			testRet = -1;
+			if (v == 1) {printf("FAIL\n");}
+		}
+		else if (v == 1) {printf("PASS\n");}
 
 		//part 3: did the card (not) have the expected effect on other players if (not) expected
-
-
+		if (v==1) {printf("expected other player hand count **%d**, actual **%d**\n", otherPlayerHandPre, otherPlayerHandPost);}
+		if (otherPlayerHandPre != otherPlayerHandPost)
+		{
+			testRet = -1;
+			if (v == 1) {printf("FAIL\n");}
+		}
+		else if (v == 1) {printf("PASS\n");}
 
 		//part 4: were other non-player resources (not) affected if effect (not) expected
-
+		if (v==1) {printf("expected other player deck count **%d**, actual **%d**\n", otherPlayerDeckPre, otherPlayerDeckPost);}
+		if (otherPlayerDeckPre != otherPlayerDeckPost)
+		{
+			testRet = -1;
+			if (v == 1) {printf("FAIL\n");}
+		}
+		else if (v == 1) {printf("PASS\n");}
 	}
 
 	return testRet;
@@ -80,7 +98,7 @@ int main(int argc, char *argv[])
     //smithy
     if (v == 1){printf("**********  TEST INITIALIZED - testSmithyRefactor  **********\n\n");}
     testRet = testSmithyRefactor(scen, v);
-	if (v == 1){printf("**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
+	if (v == 1){printf("\n**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
 
 
 	//dealloc mem
