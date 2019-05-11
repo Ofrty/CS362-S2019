@@ -70,3 +70,4 @@ REVISION
 # kirkhamj IDE stuff
 *.cbp
 *.layout
+.idea/
