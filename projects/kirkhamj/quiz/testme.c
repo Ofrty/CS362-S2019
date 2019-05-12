@@ -3,25 +3,50 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define ASCII_RNGA_MIN 32
-#define ASCII_RNGA_MAX 41
-#define ASCII_RNGB_MIN 91
-#define ASCII_RNGB_MAX 125
-#define LEN_MIN 3
-#define LEN_MAX 7
+#define ASCII_MIN 32
+#define ASCII_MAX 125
+#define LEN_MIN 1 
+#define LEN_MAX 5
+
+//global var - char input domain
+const char inDom[] = {'(',')','{','}','[',']',' ','q','w','e','r','t','a','s','d','f','z','x','c','v','\0'};
+
+/*charInArr() is a helper function that assesses whether arg1 is in the input domain*/
+int charInInDom(char c)
+{
+	int found = 0;
+
+	//check each value of input domain. if found, set return value to true and break loop
+	for (int i = 0; ((i < (sizeof(inDom)/sizeof(char))) && (!found)); i++)
+	{
+		if(c == inDom[i])
+		{
+			found = 1;
+		}
+	}
+
+	return found;
+}
 
 char inputChar()
 {
-	//generate a random value in valid ASCII ranges.
-	//int c = (rand() % (ASCII_MAX - ASCII_MIN + 1)) + ASCII_MIN; //abandoned single-range implementaion
+	//int c = -1; //let's just declare directly to a char and save some running time, shall we?
+	char c = '@'; //init to non-input domain val
+	
+	//(re)gen a char until it's verified as part of the input domain
+	while (!charInInDom(c))
+	{
+		//generate a random value in valid ASCII ranges. handle char casting once, here.
+		c = (char) ((rand() % (ASCII_MAX - ASCII_MIN + 1)) + ASCII_MIN);
+	}
 
-	int c = 0;
-
+	/* abandoned 2-range implementation
 	while ( !((c >= ASCII_RNGA_MIN) && (c <= ASCII_RNGA_MAX)) && !((c >= ASCII_RNGB_MIN) && (c <= ASCII_RNGB_MAX))) //is val within either range
 	{
 		//random int isn't within ranges, regen
 		c = (rand() % (ASCII_RNGB_MAX - ASCII_RNGA_MIN + 1)) + ASCII_RNGA_MIN;
 	}
+	*/
 
 	/*debug num gen
 	for(int i = 0; i < 50; i++)
@@ -50,8 +75,8 @@ char inputChar()
 	printf("\n");
 	*/
  
-	//return randomly-generatedint casted to char
-	return (char) c;
+	//return randomly-generated, validated char
+	return c;
 }
 
 char *inputString()
