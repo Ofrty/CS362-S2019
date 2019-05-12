@@ -5,13 +5,20 @@
 
 #define ASCII_MIN 32
 #define ASCII_MAX 125
+/*
+#define ASCII_RNGA_MIN 32
+#define ASCII_RNGA_MAX 41
+#define ASCII_RNGB_MIN 97
+#define ASCII_RNGB_MAX 125
+*/
 #define LEN_MIN 1 
 #define LEN_MAX 5
 
 //global var - char input domain
-const char inDom[] = {'(',')','{','}','[',']',' ','e','r','t','a','s','d','f','z','x','\0'};
+const char inDom[] = {'(',')','{','}','[',']',' ','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
 
-/*charInArr() is a helper function that assesses whether arg1 is in the input domain*/
+/*charInInDom() is a helper function that assesses whether arg1 is in the input domain*/
+/*
 int charInInDom(char c)
 {
 	int found = 0;
@@ -27,20 +34,28 @@ int charInInDom(char c)
 
 	return found;
 }
+*/
 
 char inputChar()
 {
-	//int c = -1; //let's just declare directly to a char and save some running time, shall we?
-	char c = '@'; //init to non-input domain val
-	
+	//gen char in inDom
+	char c = (char) inDom[(rand() % ((sizeof(inDom))/(sizeof(char))))];
+
+	//int c = -1; //init to something outside of the domain 
+	//char c = (char) ((rand() % (ASCII_MAX - ASCII_MIN + 1)) + ASCII_MIN);
+	//int c = 64; //init to something outside of the domain 
+	//char c = '@'; //init to something outside of the domain 
+
+	/*	
 	//(re)gen a char until it's verified as part of the input domain
 	while (!charInInDom(c))
 	{
 		//generate a random value in valid ASCII ranges. handle char casting once, here.
 		c = (char) ((rand() % (ASCII_MAX - ASCII_MIN + 1)) + ASCII_MIN);
 	}
+	*/
 
-	/* abandoned 2-range implementation
+	/*
 	while ( !((c >= ASCII_RNGA_MIN) && (c <= ASCII_RNGA_MAX)) && !((c >= ASCII_RNGB_MIN) && (c <= ASCII_RNGB_MAX))) //is val within either range
 	{
 		//random int isn't within ranges, regen
@@ -107,12 +122,20 @@ void testme()
   char *s;
   char c;
   int state = 0;
+
+printf("***Running test. Will report every 250k tests for brevity.***\n\n");
+
   while (1)
   {
 	tcCount++;
 	c = inputChar();
 	s = inputString();
-	printf("Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
+	
+	//report test info if divisible by 250k
+	if ((tcCount % 250000) == 0)
+	{
+		printf("Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
+	}
 
 	if (c == '[' && state == 0) state = 1;
 	if (c == '(' && state == 1) state = 2;
@@ -128,6 +151,7 @@ void testme()
 	   && s[4] == 't' && s[5] == '\0'
 	   && state == 9)
 	{
+		printf("\n\nFINAL Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
 		printf("error ");
 		
 		//dealloc str	
