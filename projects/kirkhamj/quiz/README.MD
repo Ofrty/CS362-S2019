@@ -1,0 +1,3 @@
+# to run testme and generate coverage info...
+...simply run "make" or "make testme".
+run "make clean" to remove executable and gcov testing results
