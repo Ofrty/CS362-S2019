@@ -1,6 +1,7 @@
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
+#include "rngs.c"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -695,7 +696,7 @@ int a2Adventurer(int* curDrawnTreasure, struct gameState* curState, int* curPlay
     return 0;
 }
 
-int a2Village(int* curPlayer, struct gameState* curState,int* curHandPos)
+int a2Village(int* curPlayer, struct gameState* curState, int* curHandPos)
 {
     //+1 card
     drawCard(*curPlayer, curState);
@@ -771,8 +772,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   int index;
   int currentPlayer = whoseTurn(state);
   int nextPlayer = currentPlayer + 1;
-
   int tributeRevealedCards[2] = {-1, -1};
+
   int temphand[MAX_HAND];// moved above the if statement
   int drawntreasure=0;
   int cardDrawn;
