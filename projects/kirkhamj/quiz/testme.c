@@ -9,7 +9,7 @@
 #define LEN_MAX 5
 
 //global var - char input domain
-const char inDom[] = {'(',')','{','}','[',']',' ',,'e','r','t','a','s','d','f','z','x','\0'};
+const char inDom[] = {'(',')','{','}','[',']',' ','e','r','t','a','s','d','f','z','x','\0'};
 
 /*charInArr() is a helper function that assesses whether arg1 is in the input domain*/
 int charInInDom(char c)
