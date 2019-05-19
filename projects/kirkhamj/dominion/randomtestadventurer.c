@@ -17,7 +17,7 @@ Description:    Randomly tests the implementation of the Adventurer
 
 int randTestAdventurer(struct scen* scen, int v)
 {
-    int runRet; retVal;
+    int runRet, retVal;
 
     //randomize game state parameters; compensate for indexes when generating random ints
     int curPlayer = (genRandInt(1, MAX_PLAYERS) - 1);
@@ -34,13 +34,14 @@ int randTestAdventurer(struct scen* scen, int v)
 	scen->game->hand[curPlayer][0] = adventurer;
 
     //other vars
+    int handPos = 0;
     int choice1, choice2, choice3;
     choice1 = choice2 = choice3 = -1;
     int coinBonus = 0;
 
     //calculate pre-run vars
     int preTreasureInHand = 0; //# of treasure in hand pre-run is immaterial here, just care how much it increases by.
-	int preHandSize = scen->game->handCount;
+	int preHandSize = scen->game->handCount[curPlayer];
 	int preDeckSize = scen->game->deckCount[curPlayer];
 
 	int preTreasureInDeck = 0;  //count number of treasure in the player's deck
@@ -63,7 +64,7 @@ int randTestAdventurer(struct scen* scen, int v)
 	}
 
     //for reference: args to cardEffect defined in playCard: card, choice1, choice2, choice3, state, handPos, &coin_bonus
-    runRet = cardEffect(adventurer, choice1, choice2, choice3, scen, &coinBonus);
+    runRet = cardEffect(adventurer, choice1, choice2, choice3, scen->game, handPos, &coinBonus);
 
 	//calculate post-run vars
 	int postHandSize = scen->game->handCount[curPlayer];
@@ -90,16 +91,16 @@ int randTestAdventurer(struct scen* scen, int v)
     //if return value of the function wasn't 0, then we know something went really wrong.
     if (runRet != 0)
     {
-        testRet = -666;
+        runRet = -666;
     }
     else
     {
         //check values expected to change
         //hand count
-		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (preHandSize + expTreasureDiff), posthandSize);}
+		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (preHandSize + expTreasureDiff), postHandSize);}
 		if (postHandSize != (preHandSize + expTreasureDiff))
 		{
-			testRet = -1;
+			retVal = -1;
 			if (v == 1) {printf("FAIL\n");}
 		}
 		else if (v == 1) {printf("PASS\n");}
@@ -108,7 +109,7 @@ int randTestAdventurer(struct scen* scen, int v)
 		if (v == 1) {printf("expected cur player treasure in hand count **%d**, actual **%d**\n\t- ", (preTreasureInHand + expTreasureDiff), postTreasureInHand);}
 		if (postTreasureInHand != (preTreasureInHand + expTreasureDiff))
 		{
-			testRet = -1;
+			retVal = -1;
 			if (v == 1) {printf("FAIL\n");}
 		}
 		else if (v == 1) {printf("PASS\n");}
@@ -117,7 +118,7 @@ int randTestAdventurer(struct scen* scen, int v)
 		if (v == 1) {printf("expected cur player deck count **%d**, actual **%d**\n\t- ", (preDeckSize - expTreasureDiff), postDeckSize);}
 		if (postDeckSize != (preDeckSize - expTreasureDiff))
 		{
-			testRet = -1;
+			retVal = -1;
 			if (v == 1) {printf("FAIL\n");}
 		}
 		else if (v == 1) {printf("PASS\n");}
@@ -126,13 +127,12 @@ int randTestAdventurer(struct scen* scen, int v)
 		if (v == 1) {printf("expected cur player treasure in deck count **%d**, actual **%d**\n\t- ", (preTreasureInDeck - expTreasureDiff), postTreasureInDeck);}
 		if (postTreasureInDeck != (preTreasureInDeck - expTreasureDiff))
 		{
-			testRet = -1;
+			retVal = -1;
 			if (v == 1) {printf("FAIL\n");}
 		}
 		else if (v == 1) {printf("PASS\n");}
     }
-
-	return testRet;
+	return retVal;
 
 /**a3 unit test
     //set up scen minutae

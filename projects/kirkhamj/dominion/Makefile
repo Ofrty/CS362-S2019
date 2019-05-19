@@ -37,7 +37,7 @@ player: player.c interface.o
 
 #random testing for assignment 4
 #later add: randomtestcard1.c randomtestcard2.c to first line and uncomment 1 and 2
-randomtestresults: randomtestadventurer.c testingTools.h testingTools.c dominion.o rngs.o
+randomtestresults: randomtestadventurer.c testingTools.h testingTools.c dominion.o rngs.o 
 	gcc -o randomtestadventurer randomtestadventurer.c -g  $(CFLAGS)
 	#gcc -o randomtestcard1 randomtestcard1.c -g  $(CFLAGS)
 	#gcc -o randomtestcard2 randomtestcard2.c -g  $(CFLAGS)
