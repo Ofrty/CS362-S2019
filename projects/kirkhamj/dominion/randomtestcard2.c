@@ -14,7 +14,7 @@ Description:	Randomly tests the implementation of the Village
 #include <stdlib.h>
 #include <time.h>
 
-#define TEST_COUNT 1000
+#define TEST_COUNT 10000
 #define VERBOSITY 0 
 
 int randTestVillage(struct scen* scen, int v)
