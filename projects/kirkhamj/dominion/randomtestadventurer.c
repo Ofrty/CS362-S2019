@@ -22,7 +22,7 @@ int randTestAdventurer(struct scen* scen, int v)
 	int runRet, retVal;
 
 	//randomize game state parameters; compensate for indexes when generating random ints
-	//setting to max_deck was dumb... of course 2 treasures will be there in crazy large decks! scen->game->deckCount[curPlayer] = (genRandInt(1, MAX_DECK, seed) - 1); //randomize player's deck
+	int curPlayer = 0;
 	scen->game->deckCount[curPlayer] = genRandInt(0, 20); //randomize player's deck
 
 	for (int i = 0; i < (scen->game->deckCount[curPlayer]); i++)
@@ -41,7 +41,6 @@ int randTestAdventurer(struct scen* scen, int v)
 	scen->game->hand[curPlayer][0] = adventurer; //only care that adventurer is in hand
 
 	//other vars
-	int curPlayer = 0; //(genRandInt(1, scen->game->numPlayers,seed) - 1);
 	scen->game->whoseTurn = curPlayer;
 	int handPos = 0;
 	int choice1, choice2, choice3;
@@ -128,40 +127,40 @@ int randTestAdventurer(struct scen* scen, int v)
 */
 	//check values expected to change
 	//hand count
-	if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (preHandSize + expTreasureDiff - 1), postHandSize);} //-1 to account for the loss of the adventurer card
+	if (v >= 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (preHandSize + expTreasureDiff - 1), postHandSize);} //-1 to account for the loss of the adventurer card
 	if (postHandSize != (preHandSize + expTreasureDiff))
 	{
 		retVal = -1;
-		if (v == 1) {printf("FAIL\n");}
+		if (v >= 1) {printf("FAIL\n");}
 	}
-	else if (v == 1) {printf("PASS\n");}
+	else if (v >= 1) {printf("PASS\n");}
 
 	//treasure in hand
-	if (v == 1) {printf("expected cur player treasure in hand count **%d**, actual **%d**\n\t- ", (preTreasureInHand + expTreasureDiff), postTreasureInHand);}
+	if (v >= 1) {printf("expected cur player treasure in hand count **%d**, actual **%d**\n\t- ", (preTreasureInHand + expTreasureDiff), postTreasureInHand);}
 	if (postTreasureInHand != (preTreasureInHand + expTreasureDiff))
 	{
 		retVal = -1;
-		if (v == 1) {printf("FAIL\n");}
+		if (v >= 1) {printf("FAIL\n");}
 	}
-	else if (v == 1) {printf("PASS\n");}
+	else if (v >= 1) {printf("PASS\n");}
 
 	//deck count
-	if (v == 1) {printf("expected cur player deck count <= **%d**, actual **%d**\n\t- ", (preDeckSize - expTreasureDiff), postDeckSize);}
+	if (v >= 1) {printf("expected cur player deck count <= **%d**, actual **%d**\n\t- ", (preDeckSize - expTreasureDiff), postDeckSize);}
 	if (postDeckSize > (preDeckSize - expTreasureDiff))
 	{
 		retVal = -1;
-		if (v == 1) {printf("FAIL\n");}
+		if (v >= 1) {printf("FAIL\n");}
 	}
-	else if (v == 1) {printf("PASS\n");}
+	else if (v >= 1) {printf("PASS\n");}
 
 	//treasure in deck
-	if (v == 1) {printf("expected cur player treasure in deck count **%d**, actual **%d**\n\t- ", (preTreasureInDeck - expTreasureDiff), postTreasureInDeck);}
+	if (v >= 1) {printf("expected cur player treasure in deck count **%d**, actual **%d**\n\t- ", (preTreasureInDeck - expTreasureDiff), postTreasureInDeck);}
 	if (postTreasureInDeck != (preTreasureInDeck - expTreasureDiff))
 	{
 		retVal = -1;
-		if (v == 1) {printf("FAIL\n");}
+		if (v >= 1) {printf("FAIL\n");}
 	}
-	else if (v == 1) {printf("PASS\n");}
+	else if (v >= 1) {printf("PASS\n");}
 	// }
 	return retVal;
 }
@@ -185,7 +184,7 @@ int main() //(int argc, char *argv[])
 
 		testRet = randTestAdventurer(scen, VERBOSITY);
 
-		if (VERBOSITY == 1){printf("\n**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
+		if (VERBOSITY >= 1){printf("\n**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
 
 		if (testRet == -1){failCount++;}//tally fail count
 

@@ -35,22 +35,30 @@ runtests: testDrawCard
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
+radv: randomtestadventurer.c testingTools.h testingTools.c dominion.o rngs.o
+	gcc -o randomtestadventurer randomtestadventurer.c -g $(CFLAGS)
+
+r1: randomtestcard1.c testingTools.h testingTools.c dominion.o rngs.o
+	gcc -o randomtestcard1 randomtestcard1.c -g $(CFLAGS)
+
+r2: randomtestcard2.c testingTools.h testingTools.c dominion.o rngs.o
+	gcc -o randomtestcard2 randomtestcard2.c -g $(CFLAGS)
+
 #random testing for assignment 4
-#later add: randomtestcard1.c randomtestcard2.c to first line and uncomment 1 and 2
 randomtestresults: randomtestadventurer.c testingTools.h testingTools.c dominion.o rngs.o 
 	gcc -o randomtestadventurer randomtestadventurer.c -g  $(CFLAGS)
-	#gcc -o randomtestcard1 randomtestcard1.c -g  $(CFLAGS)
-	#gcc -o randomtestcard2 randomtestcard2.c -g  $(CFLAGS)
+	gcc -o randomtestcard1 randomtestcard1.c -g  $(CFLAGS)
+	gcc -o randomtestcard2 randomtestcard2.c -g  $(CFLAGS)
 	echo "Result for running random tests:" > randomtestresults.out
 	echo "randomtestadventurer.c:" >> randomtestresults.out
 	./randomtestadventurer >> randomtestresults.out
 	gcov randomtestadventurer.c >> randomtestresults.out
-	#echo "randomtestcard1.c:" >> randomtestresults.out
-	#./randomtestcard1 >> randomtestresults.out
-	#gcov randomtestcard1.c >> randomtestresults.out
-	#echo "randomtestcard2.c:" >> randomtestresults.out
-	#./randomtestcard2 >> randomtestresults.out
-	#gcov randomtestcard2.c >> randomtestresults.out
+	echo "randomtestcard1.c:" >> randomtestresults.out
+	./randomtestcard1 >> randomtestresults.out
+	gcov randomtestcard1.c >> randomtestresults.out
+	echo "randomtestcard2.c:" >> randomtestresults.out
+	./randomtestcard2 >> randomtestresults.out
+	gcov randomtestcard2.c >> randomtestresults.out
 
 all: playdom player 
 

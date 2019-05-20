@@ -14,14 +14,15 @@ Description:	Randomly tests the implementation of the Smithy
 #include <stdlib.h>
 #include <time.h>
 
-#define TEST_COUNT 1
-#define VERBOSITY 1
+#define TEST_COUNT 10000
+#define VERBOSITY 0
 
 int randTestSmithy(struct scen* scen, int v)
 {
 	int runRet, retVal;
 
 	//randomize game state parameters; compensate for indexes when generating random ints
+	int curPlayer = 0;
 	scen->game->deckCount[curPlayer] = genRandInt(0, 10); //randomize player's deck
 
 	for (int i = 0; i < (scen->game->deckCount[curPlayer]); i++)
@@ -39,7 +40,6 @@ int randTestSmithy(struct scen* scen, int v)
 	scen->game->hand[curPlayer][0] = smithy; //only care that smithy is in the hand
 
 	//other vars
-	int curPlayer = 0;
 	scen->game->whoseTurn = curPlayer;
 	int handPos = 0;
 	int choice1, choice2, choice3;
@@ -49,15 +49,6 @@ int randTestSmithy(struct scen* scen, int v)
 	//calculate pre-run vars
 	int preHandSize = scen->game->handCount[curPlayer];
 	int preDeckSize = scen->game->deckCount[curPlayer];
-
-	for (int i = 0; i < scen->game->handCount[curPlayer]; i++)
-	{
-		if ((scen->game->hand[curPlayer][i] == copper) || (scen->game->hand[curPlayer][i] == silver) || (scen->game->hand[curPlayer][i] == gold))
-		{
-			preTreasureInHand++;
-		}
-
-	}
 
 	int expDiff; //how do we expect the deck/hand value to change?
 	if (scen->game->deckCount[curPlayer] >= 3) //if 3 or more in deck then 3. else however many are in deck (0 or 1 or 2).
@@ -70,7 +61,7 @@ int randTestSmithy(struct scen* scen, int v)
 	}
 
 	//low verbosity
-	if(v==1){printf("pre-run: expected deck/hand diff is %d\n", expDiff);}
+	if(v >= 1){printf("pre-run: expected deck/hand diff is %d\n", expDiff);}
 
 	//high verbosity
 	if (v == 2){printf("prehandsize = %d, predecksize = %d\n", preHandSize, preDeckSize);}
@@ -95,22 +86,22 @@ int randTestSmithy(struct scen* scen, int v)
 	{
 		//check values expected to change
 		//hand count
-		if (v == 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (preHandSize + expDiff), postHandSize);}
-		if (postHandSize != (preHandSize + expDiff))
+		if (v >= 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (preHandSize + expDiff - 1), postHandSize);} //-1 for smithy card itself getting played
+		if (postHandSize != (preHandSize + expDiff - 1))
 		{
 			retVal = -1;
-			if (v == 1) {printf("FAIL\n");}
+			if (v >= 1) {printf("FAIL\n");}
 		}
-		else if (v == 1) {printf("PASS\n");}
+		else if (v >= 1) {printf("PASS\n");}
 
 		//deck count
-		if (v == 1) {printf("expected cur player deck count <= **%d**, actual **%d**\n\t- ", (preDeckSize - expDiff), postDeckSize);}
+		if (v >= 1) {printf("expected cur player deck count = **%d**, actual **%d**\n\t- ", (preDeckSize - expDiff), postDeckSize);}
 		if (postDeckSize != (preDeckSize - expDiff))
 		{
 			retVal = -1;
-			if (v == 1) {printf("FAIL\n");}
+			if (v >= 1) {printf("FAIL\n");}
 		}
-		else if (v == 1) {printf("PASS\n");}
+		else if (v >= 1) {printf("PASS\n");}
 	}
 	return retVal;
 }
@@ -131,9 +122,9 @@ int main() //(int argc, char *argv[])
 		//set up test scenario
 		struct scen* scen = genScen();
 
-		testRet = randTestAdventurer(scen, VERBOSITY);
+		testRet = randTestSmithy(scen, VERBOSITY);
 
-		if (VERBOSITY == 1){printf("\n**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
+		if (VERBOSITY >= 1){printf("\n**********  TEST RETURNS - %d  **********\n\n\n", testRet);}
 
 		if (testRet == -1){failCount++;} //tally fail count
 
