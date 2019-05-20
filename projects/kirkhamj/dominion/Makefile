@@ -55,4 +55,4 @@ randomtestresults: randomtestadventurer.c testingTools.h testingTools.c dominion
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o randomtestadventurer.exe randomtestadventurer randomtestcard1.exe randomtestcard1 randomtestcard2.exe randomtestcard2 playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe

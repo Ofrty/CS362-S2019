@@ -22,7 +22,7 @@ struct scen* genScen()
 
     //set vars
     scen->seed = 1000;
-    scen->numPlayer = 2;
+    scen->numPlayer = genRandInt(2, MAX_PLAYERS);
     scen->maxBonus = 10;
     scen->k[0] = adventurer;
     scen->k[1] = council_room;
@@ -38,7 +38,7 @@ struct scen* genScen()
 
     //memset(scen->game, 23, sizeof(struct gameState));     // clear the game state
     scen->r = initializeGame(scen->numPlayer, scen->k, scen->seed, scen->game);   // initialize a new game
-    scen->game->handCount[scen->p] = scen->handCount;                  // set the number of cards on hand
+    //scen->game->handCount[scen->p] = scen->handCount;                  // set the number of cards on hand
 
     return scen;
 };
@@ -93,8 +93,6 @@ int setVerbosity(int v)
 //generate random val between [arg 1, arg2]
 int genRandInt(int min, int max)
 {
-    srand(time(NULL));
-
     return (rand() % ((max - min + 1) + min));
 }
 

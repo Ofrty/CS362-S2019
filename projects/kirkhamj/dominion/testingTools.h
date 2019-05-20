@@ -46,7 +46,7 @@ int interpretArgAsInt0to9(int);
 //determine verbosity of tests based on user input (if any). set to maximal verbosity if none provided.
 int setVerbosity(int);
 
-//generate random val between [arg 1, arg2]
+//generate random val between [arg 1, arg2] using seed arg3
 int genRandInt(int,int);
 
 /* TODO: make standard testing printfs
