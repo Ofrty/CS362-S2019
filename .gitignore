@@ -68,6 +68,7 @@ REVISION
 /isl*
 
 # kirkhamj IDE stuff
+.idea/
 *.cbp
 *.layout
 .idea/
