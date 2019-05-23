@@ -23,6 +23,7 @@ Citations (header & implementation):
 //set of vars that can be created on-the-fly for testing specific game scenarios
 struct scen
 {
+
 	//main vars
 	struct gameState* game;
 	int i, p, r, handCount;
@@ -56,3 +57,4 @@ void announceReturn(int);
 */
 
 #endif //_TESTINGTOOLS_H
+wa

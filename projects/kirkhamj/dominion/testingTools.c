@@ -14,6 +14,7 @@ Description:	See header file for description.
 #include <string.h>
 #include <time.h>
 
+
 //generates a packaged struct of relevant vars
 struct scen* genScen()
 {
@@ -34,13 +35,14 @@ struct scen* genScen()
 	scen->k[7] = village;
 	scen->k[8] = baron;
 	scen->k[9] = great_hall;
+
 	scen->maxHandCount = 5;
 
 	//memset(scen->game, 23, sizeof(struct gameState));	 // clear the game state
 	scen->r = initializeGame(scen->numPlayer, scen->k, scen->seed, scen->game);   // initialize a new game
 	//scen->game->handCount[scen->p] = scen->handCount;				  // set the number of cards on hand
-
-	return scen;
+ 
+  return scen;
 };
 
 //dealloc scen
@@ -94,6 +96,30 @@ int setVerbosity(int v)
 int genRandInt(int min, int max)
 {
 	return (rand() % ((max - min + 1) + min));
+    int retVal;
+
+    //check input. if value is provided, validate & assign it. otherwise default to max verbosity.
+    if (v)
+    {
+        //validate
+        if (v >= VERBOSITY_MIN && v<= VERBOSITY_MAX)
+        {
+            retVal = v;
+        }
+        else //not validated, just default to maximal verbosity
+        {
+            printf("***Provided test verbosity value *%d* invalid - must be between %d-%d (inclusive)\n", v, VERBOSITY_MIN, VERBOSITY_MAX);
+            printf("***Defaulting to maximal test verbosity\n\n\n");
+
+            retVal = VERBOSITY_MAX;
+        }
+    }
+    else //not specified, set maximal verbosity
+    {
+        retVal = VERBOSITY_MAX;
+    }
+
+    return retVal;
 }
 
 /* TODO: make standard testing printfs

@@ -35,6 +35,7 @@ runtests: testDrawCard
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
+
 radv: randomtestadventurer.c testingTools.h testingTools.c dominion.o rngs.o
 	gcc -o randomtestadventurer randomtestadventurer.c -g $(CFLAGS)
 
@@ -43,6 +44,26 @@ r1: randomtestcard1.c testingTools.h testingTools.c dominion.o rngs.o
 
 r2: randomtestcard2.c testingTools.h testingTools.c dominion.o rngs.o
 	gcc -o randomtestcard2 randomtestcard2.c -g $(CFLAGS)
+
+#random testing for assignment 3
+unittestresults: unittest1.c unittest2.c unittest3.c unittest4.c testingTools.h testingTools.c dominion.o rngs.o
+	gcc -o unittest1 unittest1.c -g  $(CFLAGS)
+	gcc -o unittest2 unittest2.c -g  $(CFLAGS)
+	gcc -o unittest3 unittest3.c -g  $(CFLAGS)
+	gcc -o unittest4 unittest4.c -g  $(CFLAGS)
+	echo "Result for running unit tests:" > unittestresults.out
+	echo "unittest1.c:" >> unittestresults.out
+	./unittest1 >> unittestresults.out
+	gcov unittest1.c >> unittestresults.out
+	echo "unittest2.c:" >> unittestresults.out
+	./unittest2 >> unittestresults.out
+	gcov unittest2.c >> unittestresults.out
+	echo "unittest3.c:" >> unittestresults.out
+	./unittest3 >> unittestresults.out
+	gcov unittest3.c >> unittestresults.out
+	echo "unittest4.c:" >> unittestresults.out
+	./unittest4 >> unittestresults.out
+	gcov unittest4.c >> unittestresults.out
 
 #random testing for assignment 4
 randomtestresults: randomtestadventurer.c testingTools.h testingTools.c dominion.o rngs.o 
