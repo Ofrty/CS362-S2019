@@ -107,7 +107,7 @@ public class UrlValidatorTest extends TestCase {
             boolean expected = true;
 
             //JAK: careful here: testPartsIndexIndex (index written twice) is a loop counter, whereas testPartsIndex (index written once) is a local class object (of class UrlValidatorTest).
-            //JAK: loop through the versions of this "part"
+            //JAK: loop through all of the versions of the parts and append each
             for (int testPartsIndexIndex = 0; testPartsIndexIndex < testPartsIndex.length; ++testPartsIndexIndex) {
                 int index = testPartsIndex[testPartsIndexIndex];
 
