@@ -12,6 +12,7 @@ Description:	Randomly tests the implementation of the Adventurer
 #include "testingTools.c"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 
 #define TEST_COUNT 10000
@@ -128,7 +129,7 @@ int randTestAdventurer(struct scen* scen, int v)
 	//check values expected to change
 	//hand count
 	if (v >= 1) {printf("expected cur player hand count **%d**, actual **%d**\n\t- ", (preHandSize + expTreasureDiff - 1), postHandSize);} //-1 to account for the loss of the adventurer card
-	if (postHandSize != (preHandSize + expTreasureDiff))
+	if (postHandSize != (preHandSize + expTreasureDiff - 1))
 	{
 		retVal = -1;
 		if (v >= 1) {printf("FAIL\n");}

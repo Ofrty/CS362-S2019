@@ -12,8 +12,8 @@ int getCost(int cardNumber);
 int cardEffect(int card, int choice1, int choice2, int choice3, 
 	       struct gameState *state, int handPos, int *bonus);
 
-void handleAdventurer(struct gameState *state, int currentPlayer, int nextPlayer); //line 1230
-void handleSmithy(struct gameState *state, int currentPlayer, int handPos); //line 1258
+int handleAdventurer(struct gameState *state, int currentPlayer, int nextPlayer); //line 1230
+int handleSmithy(struct gameState *state, int currentPlayer, int handPos); //line 1258
 void handleSeaHag(struct gameState *state, int currentPlayer);
 void handleCutpurse(struct gameState *state, int currentPlayer, int handPos);
 void handleOutpost(struct gameState *state, int currentPlayer, int handPos);

@@ -13,17 +13,17 @@ Description:    Tests the implementation of the Adventurer function
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VERBOSITY 1
+#define VERBOSITY 0
 
 int testAdventurerRefactor(struct scen* scen, int v)
 {
 	int testRet = 0;
 
 	//set up scen minutae
-	int curDrawnTreasure = 0;
-	int curCardDrawn;
-	int curTempHand[MAX_HAND];
-	int curZ = 0;
+	//int curDrawnTreasure = 0; //refactor for assignment 5
+	//int curCardDrawn; //refactor for assignment 5
+	//int curTempHand[MAX_HAND]; //refactor for assignment 5
+	//int curZ = 0; //refactor for assignment 5
 	int curPlayer = 0;
 	int otherPlayer = 1;
 	scen->game->deckCount[curPlayer] = 4; //deliberately setting deck to size 4 with treasure = 2
@@ -48,7 +48,7 @@ int testAdventurerRefactor(struct scen* scen, int v)
 	*/
 	
 	//run the test
-	int runRet = handleAdventurer(&curDrawnTreasure, scen->game, &curPlayer, &curCardDrawn, curTempHand, &curZ);
+	int runRet = handleAdventurer(scen->game, curPlayer, (curPlayer + 1));
 
 	//if return value of the function wasn't 0, then we know something went really wrong.
 	if (runRet != 0)

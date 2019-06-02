@@ -1,6 +1,7 @@
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
+#include "rngs.c"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -1237,9 +1238,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   return -1;
 }
 
-void handleAdventurer(struct gameState *state, int currentPlayer, int nextPlayer){
+int handleAdventurer(struct gameState *state, int currentPlayer, int nextPlayer){
   	int temphand[MAX_HAND];
-  	int drawntreasure=1;
+  	int drawntreasure=1; //kirkhamj note: this is Brian's bug plant
   	int cardDrawn;
 	int z = 0;
 
@@ -1263,9 +1264,10 @@ void handleAdventurer(struct gameState *state, int currentPlayer, int nextPlayer
 	z=z-1;
       }
 
+	return 0; //added by kirkhamj for assignment 5: simple return 0 val to align w/ test structure. returned void before.
 }
 
-void handleSmithy(struct gameState *state, int currentPlayer, int handPos){
+int handleSmithy(struct gameState *state, int currentPlayer, int handPos){
       int i = 0;
       for (i = 0; i < 2; i++)
 	{
@@ -1275,6 +1277,7 @@ void handleSmithy(struct gameState *state, int currentPlayer, int handPos){
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
       
+	return 0; //added by kirkhamj for assignment 5: simple return 0 val to align w/ test structure. returned void before.
 }
 
 void handleSeaHag(struct gameState *state, int currentPlayer){

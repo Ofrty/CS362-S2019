@@ -96,30 +96,6 @@ int setVerbosity(int v)
 int genRandInt(int min, int max)
 {
 	return (rand() % ((max - min + 1) + min));
-    int retVal;
-
-    //check input. if value is provided, validate & assign it. otherwise default to max verbosity.
-    if (v)
-    {
-        //validate
-        if (v >= VERBOSITY_MIN && v<= VERBOSITY_MAX)
-        {
-            retVal = v;
-        }
-        else //not validated, just default to maximal verbosity
-        {
-            printf("***Provided test verbosity value *%d* invalid - must be between %d-%d (inclusive)\n", v, VERBOSITY_MIN, VERBOSITY_MAX);
-            printf("***Defaulting to maximal test verbosity\n\n\n");
-
-            retVal = VERBOSITY_MAX;
-        }
-    }
-    else //not specified, set maximal verbosity
-    {
-        retVal = VERBOSITY_MAX;
-    }
-
-    return retVal;
 }
 
 /* TODO: make standard testing printfs

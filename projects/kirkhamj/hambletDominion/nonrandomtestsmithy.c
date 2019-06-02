@@ -13,14 +13,14 @@ Description:    Tests the implementation of the Smithy function
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VERBOSITY 1
+#define VERBOSITY 0
 
 int testSmithyRefactor(struct scen* scen, int v)
 {
 	int testRet = 0;
 
 	//set up scen minutae
-	int handPos = 1; //can be any val but -1
+	//int handPos = 1; //can be any val but -1 //assignment 5 refactor
 	int curPlayer = 0;
 	int otherPlayer = 1; 
 	scen->game->handCount[curPlayer] = 5;
@@ -34,7 +34,7 @@ int testSmithyRefactor(struct scen* scen, int v)
 	memcpy(supplyPre, scen->game->supplyCount, sizeof(supplyPre));
 	
 	//run the test
-	int runRet = handleSmithy(&curPlayer, scen->game, &handPos);
+	int runRet = handleSmithy(scen->game, curPlayer, (curPlayer + 1));
 
 	//if return value of the function wasn't 0, then we know something went really wrong.
 	if (runRet != 0)
