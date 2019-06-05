@@ -71,4 +71,4 @@ REVISION
 .idea/
 *.cbp
 *.layout
-.idea/
+*.iml
