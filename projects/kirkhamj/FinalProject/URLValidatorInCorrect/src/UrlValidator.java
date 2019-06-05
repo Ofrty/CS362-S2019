@@ -1,5 +1,3 @@
-package UrlValPackage;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,6 +18,7 @@ package UrlValPackage;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -46,7 +45,7 @@ import java.util.regex.Pattern;
  *   Construct a UrlValidator with valid schemes of "http", and "https".
  *
  *    String[] schemes = {"http","https"}.
- *    UrlValidator urlValidator = new UrlValidator_Incorrect(schemes);
+ *    UrlValidator urlValidator = new UrlValidator(schemes);
  *    if (urlValidator.isValid("ftp://foo.bar.com/")) {
  *       System.out.println("url is valid");
  *    } else {
@@ -56,7 +55,7 @@ import java.util.regex.Pattern;
  *    prints "url is invalid"
  *   If instead the default constructor is used.
  *
- *    UrlValidator urlValidator = new UrlValidator_Incorrect();
+ *    UrlValidator urlValidator = new UrlValidator();
  *    if (urlValidator.isValid("ftp://foo.bar.com/")) {
  *       System.out.println("url is valid");
  *    } else {
@@ -74,7 +73,7 @@ import java.util.regex.Pattern;
  * @version $Revision: 1783203 $
  * @since Validator 1.4
  */
-public class UrlValidator_Incorrect implements Serializable {
+public class UrlValidator implements Serializable {
 
     private static final long serialVersionUID = 7557161713937335013L;
 
@@ -100,7 +99,7 @@ public class UrlValidator_Incorrect implements Serializable {
      * Allow local URLs, such as http://localhost/ or http://machine/ .
      * This enables a broad-brush check, for complex local machine name
      *  validation requirements you should create your validator with
-     *  a {@link RegexValidator} instead ({@link #UrlValidator_Incorrect(RegexValidator, long)})
+     *  a {@link RegexValidator} instead ({@link #UrlValidator(RegexValidator, long)})
      */
     public static final long ALLOW_LOCAL_URLS = 1 << 3; // CHECKSTYLE IGNORE MagicNumber
 
@@ -195,20 +194,20 @@ public class UrlValidator_Incorrect implements Serializable {
     /**
      * Singleton instance of this class with default schemes and options.
      */
-    private static final UrlValidator_Incorrect DEFAULT_URL_VALIDATOR = new UrlValidator_Incorrect();
+    private static final UrlValidator DEFAULT_URL_VALIDATOR = new UrlValidator();
 
     /**
      * Returns the singleton instance of this class with default schemes and options.
      * @return singleton instance with default schemes and options
      */
-    public static UrlValidator_Incorrect getInstance() {
+    public static UrlValidator getInstance() {
         return DEFAULT_URL_VALIDATOR;
     }
 
     /**
      * Create a UrlValidator with default properties.
      */
-    public UrlValidator_Incorrect() {
+    public UrlValidator() {
         this(null);
     }
 
@@ -220,7 +219,7 @@ public class UrlValidator_Incorrect implements Serializable {
      *        be specified. Setting the ALLOW_ALL_SCHEMES option will
      *        ignore the contents of schemes.
      */
-    public UrlValidator_Incorrect(String[] schemes) {
+    public UrlValidator(String[] schemes) {
         this(schemes, 0L);
     }
 
@@ -230,7 +229,7 @@ public class UrlValidator_Incorrect implements Serializable {
      * this class.  To set multiple options you simply add them together.  For example,
      * ALLOW_2_SLASHES + NO_FRAGMENTS enables both of those options.
      */
-    public UrlValidator_Incorrect(long options) {
+    public UrlValidator(long options) {
         this(null, null, options);
     }
 
@@ -241,7 +240,7 @@ public class UrlValidator_Incorrect implements Serializable {
      * this class.  To set multiple options you simply add them together.  For example,
      * ALLOW_2_SLASHES + NO_FRAGMENTS enables both of those options.
      */
-    public UrlValidator_Incorrect(String[] schemes, long options) {
+    public UrlValidator(String[] schemes, long options) {
         this(schemes, null, options);
     }
 
@@ -254,7 +253,7 @@ public class UrlValidator_Incorrect implements Serializable {
      * <p><code>ALLOW_2_SLASHES + NO_FRAGMENTS</code></p>
      * enables both of those options.
      */
-    public UrlValidator_Incorrect(RegexValidator authorityValidator, long options) {
+    public UrlValidator(RegexValidator authorityValidator, long options) {
         this(null, authorityValidator, options);
     }
 
@@ -267,7 +266,7 @@ public class UrlValidator_Incorrect implements Serializable {
      * <p><code>ALLOW_2_SLASHES + NO_FRAGMENTS</code></p>
      * enables both of those options.
      */
-    public UrlValidator_Incorrect(String[] schemes, RegexValidator authorityValidator, long options) {
+    public UrlValidator(String[] schemes, RegexValidator authorityValidator, long options) {
         this.options = options;
 
         if (isOn(ALLOW_ALL_SCHEMES)) {
