@@ -266,6 +266,7 @@ public class UrlValidator implements Serializable {
      * <p><code>ALLOW_2_SLASHES + NO_FRAGMENTS</code></p>
      * enables both of those options.
      */
+    /* JAK - the first bug was here */
 	public UrlValidator(String[] schemes, RegexValidator authorityValidator, long options) {
         this.options = options;
 
