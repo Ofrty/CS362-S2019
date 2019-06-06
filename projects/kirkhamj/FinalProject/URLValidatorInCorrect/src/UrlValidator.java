@@ -220,7 +220,7 @@ public class UrlValidator implements Serializable {
      *        ignore the contents of schemes.
      */
     public UrlValidator(String[] schemes) {
-        this(schemes, 0L);
+        this(schemes, 0L); //bugged line
     }
 
     /**
@@ -276,11 +276,17 @@ public class UrlValidator implements Serializable {
             if (schemes == null) {
                 schemes = DEFAULT_SCHEMES;
             }
-            
-            allowedSchemes = new HashSet<String>(-1);
-            
-            for(int i=0; i < schemes.length+1; i++) {
-            	allowedSchemes.add(schemes[i-1].toLowerCase(Locale.ENGLISH));
+
+            /*JAK bug note*/
+            //allowedSchemes = new HashSet<String>(-1); //bugged line
+            allowedSchemes = new HashSet<String>(0);
+
+            /* JAK bug note */
+            //for(int i=0; i < schemes.length+1; i++) {
+            for(int i=0; i < schemes.length; i++) {
+            	/* JAK bug note */
+                //allowedSchemes.add(schemes[i].toLowerCase(Locale.ENGLISH)); //bugged line
+                allowedSchemes.add(schemes[i].toLowerCase(Locale.ENGLISH));
             }
         }
 

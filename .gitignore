@@ -72,3 +72,4 @@ REVISION
 *.cbp
 *.layout
 .idea/
+out/
