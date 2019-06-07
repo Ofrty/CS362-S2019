@@ -61,6 +61,39 @@ public class randomTests {
         assertTrue(((vC >= minC) && (vC <= maxC)));
     }
 
+    /*given a 2D-array of Url components in arg1, assemble and return a randomly-generated candidate Url ResultPair. arg2 is verbosity level.*/
+    public ResultPair genRandUrl(ResultPair[][] sourcePairs, int v)
+    {
+        //pick from random URL components to assemble a URL
+        ResultPair url = new ResultPair("", true);   //make a new pair object
+        for (int i = 0; i < 5; i++) //loop through all Url component types
+        {
+            //verbosity
+            if (v >= 3)
+            {
+                System.out.println("***Url construction at loop iteration " + i + "***");
+                System.out.println("item val = *" + url.item + "* and validity value = *" + url.valid + "*");
+            }
+
+            //pick a randomly-selected item from this Url's component type
+            ResultPair tempPair = sourcePairs[i][(genRandIntBetweenInclusive(0, (sourcePairs[i].length - 1)))];
+
+            //verbosity
+            if (v >= 3){System.out.println("rand-selected result pair for cur itr is:\n" + tempPair.item + "\n" + tempPair.valid);}
+
+            //append the item of this in-construction Url
+            url.item += tempPair.item;
+
+            //update the truthiness of this in-construction Url
+            url.valid = (url.valid && tempPair.valid);
+
+            //verbosity
+            if (v >= 3){System.out.println("Url updated w/ new result pair has item val = *" + url.item + "* and validity value = *" + url.valid + "*");}
+        }
+
+        return url;
+    }
+
     /*basic test of isValid() for reference*/
     @Test
     public void simpleTest()
@@ -70,16 +103,24 @@ public class randomTests {
     }
 
     @Test
-    public void getResultPair()
-    {
-
-    }
-
-    @Test
     public void randomTestSuite()
     {
-        //set verbosity. 0 = nothing, 1 = min info, 2 = max info
-        int v = 2;
+        //set general test parameters and counters
+        int testCount = 1000;
+        int disagreeCount = 0;
+
+        //set verbosity. 0 = essential info, 1 = show failed pairs, 2 = show all tests, 3 = debug info for our test functions
+        int v = 1;
+
+        //storage for failed pairs; pre-fill with nulls
+        ResultPair[] disagreePairs;
+        disagreePairs = new ResultPair[testCount];
+        Arrays.fill(disagreePairs, null);
+
+        System.out.println("\n\n******************** Starting Random Test Suite on isValid() ********************\n\n");
+
+        //url validator under test
+        UrlValidator mut = new UrlValidator();
 
         //grab ResultPairs from extant test suite and package them for easy acces
         UrlValidatorTest prePairs = new UrlValidatorTest("Random Test Resources");
@@ -92,41 +133,48 @@ public class randomTests {
             prePairs.testUrlQuery
         };
 
-        //pick from random pairs to assemble a URL
-        ResultPair oneUrl = new ResultPair("", true);   //make a new pair object
-        for (int i = 0; i < 5; i++) //loop through all Url component types
+        //create inputs and test each input as it's created.
+        //create an array of input URLs. loop through array, inserting a randomly-generated URL at each.
+        ResultPair[] inputs;
+        inputs = new ResultPair[testCount];
+
+        for (int i = 0; i < testCount; i++)
         {
-            //verbosity
-            if (v == 2)
+            inputs[i] = genRandUrl(sourcePairsNoOptions, v);
+
+            //pass to isValid() and assert truthiness
+            if (v >= 2){System.out.println("\n*Test\t#" + i + ": url **  " + inputs[i].item + "  ** expected to be **  " + inputs[i].valid + "  **. isValid says: **  " + mut.isValid(inputs[i].item) + "  **");} //verbosity
+
+            //assert truthiness; comment out if you want to run all tests
+            //assertEquals(inputs[i].valid, mut.isValid(inputs[i].item));
+
+            //handle fail counts and storage
+            if (inputs[i].valid != mut.isValid(inputs[i].item))
             {
-                System.out.println("***Url construction at loop iteration " + i + "***");
-                System.out.println("item val = *" + oneUrl.item + "* and validity value = *" + oneUrl.valid + "*");
+                disagreePairs[disagreeCount] = inputs[i];
+
+                disagreeCount++;
             }
-
-            //pick a randomly-selected item from this Url's component type
-            ResultPair tempPair = sourcePairsNoOptions[i][(genRandIntBetweenInclusive(0, (sourcePairsNoOptions[i].length - 1)))];
-
-            //verbosity
-            if (v == 2){System.out.println("rand-selected result pair for cur itr is:\n" + tempPair.item + "\n" + tempPair.valid);}
-
-            //append the item of this in-construction Url
-            oneUrl.item += tempPair.item;
-
-            //update the truthiness of this in-construction Url
-            oneUrl.valid = (oneUrl.valid && tempPair.valid);
-
-            //verbosity
-            if (v == 2){System.out.println("Url updated w/ new result pair has item val = *" + oneUrl.item + "* and validity value = *" + oneUrl.valid + "*");}
         }
 
-        //verbosity
-        if (v == 2){System.out.println("******\nfinal url pair:\n" + oneUrl.item + "\n" + oneUrl.valid + "\n******");}
+        //report final info
+        System.out.println("\n\n******************** Finished Random Test Suite on isValid() ********************\n");
+        System.out.println("URLs tested:\t" + testCount);
+        System.out.println("isValid() agreements:\t" + (testCount - disagreeCount) + " (~ " + ((((float) (testCount - disagreeCount))/(float) testCount) * 100)+ "%)");
+        System.out.println("isValid() disagreements:\t" + disagreeCount + " (~ " + (((float) disagreeCount/ (float)testCount) * 100) + "%)");
 
-        //pass to isValid()
+        //show disagreed pairs if verbosity is 1
+        if (v >= 1)
+        {
+            System.out.println("\n** isValid() disagreed with the expectation for the following result pairs:\n");
 
-        //assert truthiness
+            for (int i = 0; i < disagreeCount; i++)
+            {
+                System.out.println("*#" + i + ": url **  " + disagreePairs[i].item + "  ** was expected to be **  " + disagreePairs[i].valid + "  **, but isValid() said: **  " + (!disagreePairs[i].valid));
+            }
+        }
 
-        assertTrue(true);
+        //final assertion: did all of our tests pass?
+        assertEquals(0, disagreeCount);
     }
-
 }
