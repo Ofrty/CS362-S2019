@@ -62,6 +62,7 @@ public class randomTests {
     }
 
     /*given a 2D-array of Url components in arg1, assemble and return a randomly-generated candidate Url ResultPair. arg2 is verbosity level.*/
+    //public ResultPair genRandUrl(ResultPair[][] sourcePairs, long schemeOption, int v) // abandoned attempt to randomize all schemes
     public ResultPair genRandUrl(ResultPair[][] sourcePairs, int v)
     {
         //pick from random URL components to assemble a URL
@@ -84,8 +85,19 @@ public class randomTests {
             //append the item of this in-construction Url
             url.item += tempPair.item;
 
-            //update the truthiness of this in-construction Url
+            //update the truthiness of this in-construction Url.
             url.valid = (url.valid && tempPair.valid);
+
+            /* abandoned attempt to randomize ALLOW_ALL_SCHEMES
+            //update the truthiness of this in-construction Url.
+            // account for schemes options: if either we're past the scheme component OR ALLOW_ALL_SCHEMES is off...
+            // ... then go ahead and update the under-construction Url's validity based on the value of the new component ...
+            // ... otherwise, we must be at the scheme component and ALLOW_ALL must be on. nothing will change because the scheme will always be true.
+            if ( (i != 0) || (schemeOption == 0) )
+            {
+                url.valid = (url.valid && tempPair.valid);
+            }
+            */
 
             //verbosity
             if (v >= 3){System.out.println("Url updated w/ new result pair has item val = *" + url.item + "* and validity value = *" + url.valid + "*");}
@@ -119,8 +131,37 @@ public class randomTests {
 
         System.out.println("\n\n******************** Starting Random Test Suite on isValid() ********************\n\n");
 
-        //url validator under test
-        UrlValidator mut = new UrlValidator();
+        //create new Url validator with option to allow all schemes
+        long allow = UrlValidator.ALLOW_ALL_SCHEMES;
+        UrlValidator mut = new UrlValidator(allow);
+
+        /* abandoned attempt to randomize all schemes
+        //randomize ALLOW_ALL_SCHEMES option for every test and store in a separate array
+        long allowAllSchemesBools[];
+        allowAllSchemesBools = new long[testCount];
+
+        for (int i = 0; i < testCount; i++)
+        {
+            allowAllSchemesBools[i] = (UrlValidator.ALLOW_ALL_SCHEMES * genRandIntBetweenInclusive(0,1));
+        }
+        */
+
+        /* abandoned attempt B to randomize ALLOW_ALL_SCHEMES
+        //randomize ALLOW_ALL_SCHEMES and create the MUT dependent on this
+        int allowAllSchemesBool = genRandIntBetweenInclusive(0,1);
+        UrlValidator mut;
+        if ((allowAllSchemesBool == 1))
+        {
+            //yes - allow all schemes
+            long allow = UrlValidator.ALLOW_ALL_SCHEMES;
+            mut = new UrlValidator(allow);
+        }
+        else
+        {
+            //no - do not allow all schemes (default)
+            mut = new UrlValidator();
+        }
+        */
 
         //grab ResultPairs from extant test suite and package them for easy acces
         UrlValidatorTest prePairs = new UrlValidatorTest("Random Test Resources");
@@ -128,8 +169,8 @@ public class randomTests {
         {
             prePairs.testUrlScheme,
             prePairs.testUrlAuthority,
-            prePairs.testPath,
             prePairs.testUrlPort,
+            prePairs.testPath,
             prePairs.testUrlQuery
         };
 
@@ -140,17 +181,21 @@ public class randomTests {
 
         for (int i = 0; i < testCount; i++)
         {
+            //make a URL based on the available options and the ALL_SCHEMES options
+            //inputs[i] = genRandUrl(sourcePairsNoOptions, allowAllSchemesBool, v); //abandoned attempt to randomize ALLOW_ALL_SCHEMES
             inputs[i] = genRandUrl(sourcePairsNoOptions, v);
 
             //pass to isValid() and assert truthiness
             if (v >= 2){System.out.println("\n*Test\t#" + i + ": url **  " + inputs[i].item + "  ** expected to be **  " + inputs[i].valid + "  **. isValid says: **  " + mut.isValid(inputs[i].item) + "  **");} //verbosity
 
-            //assert truthiness; comment out if you want to run all tests
+            //assert truthiness. leave "on" to abort test at the first failure. comment out if you want to run all tests.
             //assertEquals(inputs[i].valid, mut.isValid(inputs[i].item));
 
             //handle fail counts and storage
             if (inputs[i].valid != mut.isValid(inputs[i].item))
             {
+                mut.isValid(inputs[i].item); //debug; just doing it again for a breakpoint
+
                 disagreePairs[disagreeCount] = inputs[i];
 
                 disagreeCount++;
@@ -160,21 +205,28 @@ public class randomTests {
         //report final info
         System.out.println("\n\n******************** Finished Random Test Suite on isValid() ********************\n");
         System.out.println("URLs tested:\t" + testCount);
-        System.out.println("isValid() agreements:\t" + (testCount - disagreeCount) + " (~ " + ((((float) (testCount - disagreeCount))/(float) testCount) * 100)+ "%)");
-        System.out.println("isValid() disagreements:\t" + disagreeCount + " (~ " + (((float) disagreeCount/ (float)testCount) * 100) + "%)");
+        System.out.println("isValid() agreements:\t" + (testCount - disagreeCount) + " (" + ((((float) (testCount - disagreeCount))/(float) testCount) * 100)+ "%)");
+        System.out.println("isValid() disagreements:\t" + disagreeCount + " (" + (((float) disagreeCount/ (float)testCount) * 100) + "%)");
 
         //show disagreed pairs if verbosity is 1
         if (v >= 1)
         {
-            System.out.println("\n** isValid() disagreed with the expectation for the following result pairs:\n");
-
-            for (int i = 0; i < disagreeCount; i++)
+            if (disagreeCount > 0)
             {
-                System.out.println("*#" + i + ": url **  " + disagreePairs[i].item + "  ** was expected to be **  " + disagreePairs[i].valid + "  **, but isValid() said: **  " + (!disagreePairs[i].valid));
+                System.out.println("\n** isValid() disagreed with the expectation for the following URLs:\n");
+
+                for (int i = 0; i < disagreeCount; i++)
+                {
+                    System.out.println("*#" + i + ": url **  " + disagreePairs[i].item + "  ** was expected to be **  " + disagreePairs[i].valid + "  **, but isValid() said: **  " + (!disagreePairs[i].valid) + "  **");
+                }
+            }
+            else
+            {
+                System.out.println("\n** isValid() agreed with the expectations for all URLs.\n");
             }
         }
 
-        //final assertion: did all of our tests pass?
+        //final assertion: did all of our tests pass? this may not execute if each input is asserted individually and one of them fails
         assertEquals(0, disagreeCount);
     }
 }
