@@ -67,10 +67,9 @@ REVISION
 /gmp*
 /isl*
 
-# kirkhamj IDE stuff
+# IDE stuff
 .idea/
 *.cbp
-*.layout
-.idea/
+*.iml
 out/
 obj/
