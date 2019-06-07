@@ -75,5 +75,69 @@ public class dumTest {
 
     }
 
+    @Test
+    public void pathTests()
+    {
+        UrlValidator smrtUrlVal = new UrlValidator();
+
+        // path of a URL is made of segments that make up a structured hierarchy
+        // Each segment is separated by a the / character. Similar to a directory structure.
+
+        // Positive Tests
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com/index.html"));           // normal URL with path
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com/home/1/index.html"));    // longer path
+        assertTrue(smrtUrlVal.isValid("ftp://www.smrt.com/~john/doe?w=100&h=50"));  // more complicated path
+
+        // Negative Tests
+        assertFalse(smrtUrlVal.isValid("http://www.smrt.com/home//index.html"));  // double forward slash
+        assertFalse(smrtUrlVal.isValid("hTTp://www.google.com/home index html")); // spaces in path
+
+        // Boundary Test - Illegal attempt to access parent directory
+        assertFalse(smrtUrlVal.isValid("http://www.smrt.com/../file.html"));
+    }
+
+    @Test
+    public void queryTests()
+    {
+        UrlValidator smrtUrlVal = new UrlValidator();
+
+        // Query string follows ? character
+        // Information usually in key-pair format
+        // Each pair is separated by ampersand character
+
+        // Positive Tests
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com?id=1"));                  // single query
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com?id=1&domain=2%test=0"));  // longer query
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com?id=1#some-header"));      // query with fragment
+
+        // Negative Tests
+        assertFalse(smrtUrlVal.isValid("http://www.google.com?test = 1"));           // space in query
+        assertFalse(smrtUrlVal.isValid("http://www.google.com?test=\n1"));           // other white space char
+
+        // Boundary Tests
+        assertTrue(smrtUrlVal.isValid("http://www.smtr.com?test%3D1"));              // URL formatted query
+        assertFalse(smrtUrlVal.isValid("http://www.smtr.com%3Ftest%3D1"));            // URL formatted query
+    }
+
+    @Test
+    public void fragmentTests()
+    {
+        UrlValidator smrtUrlVal = new UrlValidator();
+
+        // Fragment is a pointer to a secondary resource with the first resource
+        // Follows the # character
+        // Cannot be null
+
+        // Positive Tests
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com/?index.html#test"));    // normal fragment
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com/?index.html#test1234"));    // alphanumeric fragment
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com/?index.html#test12^&*!"));  // alpha symbol fragment
+
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com/?index.html#"));           // empty fragment
+        assertTrue(smrtUrlVal.isValid("http://www.smrt.com/?index.html#1#2#3"));      // more than one fragment
+
+        // No negative tests possible - fragment part alone cannot make the URL fail
+
+    }
 
 }
