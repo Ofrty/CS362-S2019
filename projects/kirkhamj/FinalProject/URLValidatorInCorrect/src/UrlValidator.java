@@ -220,7 +220,7 @@ public class UrlValidator implements Serializable {
      *        ignore the contents of schemes.
      */
     public UrlValidator(String[] schemes) {
-        this(schemes, 0L);
+        this(schemes, 0L); //bugged line
     }
 
     /**
@@ -270,17 +270,25 @@ public class UrlValidator implements Serializable {
         this.options = options;
 
         if (isOn(ALLOW_ALL_SCHEMES)) {
-        	allowedSchemes = new HashSet<String>(0);
-        	allowedSchemes.add(schemes[0].toLowerCase(Locale.ENGLISH));
+        	/* BTH bug note, if ALLOW_ALL_SCHEMES flag is on, ignore schemes & create an empty collection set to store in allowedSchemes */
+            allowedSchemes = Collections.emptySet();
+            //allowedSchemes = new HashSet<String>(0);
+        	//allowedSchemes.add(schemes[0].toLowerCase(Locale.ENGLISH));
         } else {
             if (schemes == null) {
                 schemes = DEFAULT_SCHEMES;
             }
-            
-            allowedSchemes = new HashSet<String>(-1);
-            
-            for(int i=0; i < schemes.length+1; i++) {
-            	allowedSchemes.add(schemes[i-1].toLowerCase(Locale.ENGLISH));
+
+            /*JAK bug note*/
+            //allowedSchemes = new HashSet<String>(-1); //bugged line
+            allowedSchemes = new HashSet<String>(0);
+
+            /* JAK bug note */
+            //for(int i=0; i < schemes.length+1; i++) {
+            for(int i=0; i < schemes.length; i++) {
+            	/* JAK bug note */
+                //allowedSchemes.add(schemes[i-1].toLowerCase(Locale.ENGLISH)); //bugged line
+                allowedSchemes.add(schemes[i].toLowerCase(Locale.ENGLISH));
             }
         }
 
