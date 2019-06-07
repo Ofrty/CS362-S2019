@@ -270,8 +270,10 @@ public class UrlValidator implements Serializable {
         this.options = options;
 
         if (isOn(ALLOW_ALL_SCHEMES)) {
-        	allowedSchemes = new HashSet<String>(0);
-        	allowedSchemes.add(schemes[0].toLowerCase(Locale.ENGLISH));
+        	/* BTH bug note, if ALLOW_ALL_SCHEMES flag is on, ignore schemes & create an empty collection set to store in allowedSchemes */
+            allowedSchemes = Collections.emptySet();
+            //allowedSchemes = new HashSet<String>(0);
+        	//allowedSchemes.add(schemes[0].toLowerCase(Locale.ENGLISH));
         } else {
             if (schemes == null) {
                 schemes = DEFAULT_SCHEMES;
@@ -285,7 +287,7 @@ public class UrlValidator implements Serializable {
             //for(int i=0; i < schemes.length+1; i++) {
             for(int i=0; i < schemes.length; i++) {
             	/* JAK bug note */
-                //allowedSchemes.add(schemes[i].toLowerCase(Locale.ENGLISH)); //bugged line
+                //allowedSchemes.add(schemes[i-1].toLowerCase(Locale.ENGLISH)); //bugged line
                 allowedSchemes.add(schemes[i].toLowerCase(Locale.ENGLISH));
             }
         }
